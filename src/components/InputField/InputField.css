@@ -1,0 +1,30 @@
+.input-container{
+    display: flex;
+    flex-direction: column;
+  }
+  .todo-card-input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+  }
+  
+  .input-actions{
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .input-cancel,
+  .input-add{
+    font-size: 13px;
+    font-weight: 600;
+    color: #777;
+    padding: 8px;
+    cursor: pointer;
+  
+  }
+  
+  .input-cancel:hover,.input-add:hover{
+    color: rgb(0, 0, 0);
+  }
