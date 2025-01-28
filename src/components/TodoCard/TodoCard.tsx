@@ -3,13 +3,22 @@ import "./TodoCard.css";
 import { Todo } from "../../../model";
 import { MdEditNote } from "react-icons/md";
 import { TbGitBranchDeleted } from "react-icons/tb";
+
 type Props = {
   todo: Todo;
   todoList: Todo[];
+  index: number;
   setTodoList: React.Dispatch<React.SetStateAction<Todo[]>>;
+  setActiveCard: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-const TodoCard: React.FC<Props> = ({ todo, todoList, setTodoList }) => {
+const TodoCard: React.FC<Props> = ({
+  todo,
+  todoList,
+  index,
+  setTodoList,
+  setActiveCard,
+}) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [editTodo, setEditTodo] = useState<string>(todo.todo);
 
@@ -34,7 +43,16 @@ const TodoCard: React.FC<Props> = ({ todo, todoList, setTodoList }) => {
   }, [edit]);
 
   return (
-    <form className="todo-card" onSubmit={(e) => handleEdit(e, todo.id)}>
+    <form
+      className="todo-card"
+      onSubmit={(e) => handleEdit(e, todo.id)}
+      draggable
+      onDragStart={(e) => {
+        setActiveCard(index);
+        e.dataTransfer.setData("text/plain", JSON.stringify(todo));
+      }}
+      onDragEnd={() => setActiveCard(null)}
+    >
       {edit ? (
         <div className="input-container">
           <input
@@ -45,7 +63,13 @@ const TodoCard: React.FC<Props> = ({ todo, todoList, setTodoList }) => {
             onChange={(e) => setEditTodo(e.target.value)}
           />
           <div className="input-actions">
-            <div className="input-cancel" onClick={() => setEdit(false)}>
+            <div
+              className="input-cancel"
+              onClick={() => {
+                setEdit(false);
+                setEditTodo(todo.todo);
+              }}
+            >
               Cancel
             </div>
             <div className="input-add" onClick={(e) => handleEdit(e, todo.id)}>
